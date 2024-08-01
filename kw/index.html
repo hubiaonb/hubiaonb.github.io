@@ -20,6 +20,20 @@
             100% { transform: translateY(0px); }
         }
         .float { animation: float 3s ease-in-out infinite; }
+        
+        /* 响应式图表容器 */
+        .chart-container {
+            position: relative;
+            margin: auto;
+            height: 300px;
+            width: 100%;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 400px;
+                max-width: 800px;
+            }
+        }
     </style>
 </head>
 <body class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 min-h-screen">
@@ -31,11 +45,15 @@
         
         <div class="mt-16 bg-white rounded-xl shadow-2xl p-6 animate__animated animate__fadeInUp">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">延迟统计图表</h2>
-            <canvas id="latencyChart"></canvas>
+            <div class="chart-container">
+                <canvas id="latencyChart"></canvas>
+            </div>
         </div>
         <div class="mt-16 bg-white rounded-xl shadow-2xl p-6 animate__animated animate__fadeInUp">
             <h2 class="text-2xl font-semibold text-gray-800 mb-4">实时访问统计</h2>
-            <canvas id="visitorChart"></canvas>
+            <div class="chart-container">
+                <canvas id="visitorChart"></canvas>
+            </div>
         </div>
         <footer class="text-center text-gray-600 py-8 mt-12 animate__animated animate__fadeIn">
             &copy; 2024 Website Guide. All rights reserved.
@@ -128,6 +146,8 @@
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true
@@ -143,7 +163,7 @@
         // 创建实时访问统计图表
         const visitorCtx = document.getElementById('visitorChart').getContext('2d');
         const visitorLabels = Array.from({length: 10}, (_, i) => `${i * 10}秒前`);
-        const visitorData = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+        const visitorData = Array.from({length: 500}, () => Math.floor(Math.random() * 10000));
 
         const visitorChart = new Chart(visitorCtx, {
             type: 'line',
@@ -158,6 +178,8 @@
                 }]
             },
             options: {
+                responsive: true,
+                maintainAspectRatio: false,
                 scales: {
                     y: {
                         beginAtZero: true
