@@ -1,51 +1,184 @@
-<!-- D-han、致安原创 转发保留一下版权哦 -->
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="en">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>祖安永久地址发布</title>
-	<link rel="stylesheet" href="css/index.css">
-	<link rel="stylesheet" href="css/new.css">
-	<link rel="stylesheet" href="https://unpkg.com/mdui@1.0.2/dist/css/mdui.min.css"/>
-	<script type="text/javascript" src="js/jquery-1.8.3.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Website Guide</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .float { animation: float 3s ease-in-out infinite; }
+    </style>
 </head>
-<body class="mdui-color-blue" style="background-size:100%;background-repeat:no-repeat; background-image: url('img/01.jpg');background-attachment:fixed;">
-	<div class="box mdui-shadow-3">
-		<h1>祖安永久地址发布</h1>
-		<p class="mdui-shadow-3">请 Ctrl + D 收藏本页到浏览器收藏夹回家不迷路 </p>
-		<ul class="speedlist">
-			<li>
-				<a href="https://bing.zuan.red/web/#/" target="_blank" class="mdui-shadow-3"><strong>Bing AI 镜像</strong></a>
-				<!-- <span>https://asp300.net</span> -->
-				<i class="ms1">线路延迟：<i id="lineMs0">loading</i></i>
-			</li>
-			<li>
-				<a href="https://github-img.xn--6oq72ry9d5zx.cn/" target="_blank" class="mdui-shadow-3"><strong>永久免费图床</strong></a>
-				<!-- <span>https://asp300.net</span> -->
-				<i class="ms1">线路延迟：<i id="lineMs1">loading</i></i>
-			</li>
-			<li>
-				<a href="https://docker.xn--6oq72ry9d5zx.cn/" target="_blank" class="mdui-shadow-3"><strong>docker镜像加速</strong></a>
-				<i class="ms1">线路延迟：<i id="lineMs2">loading</i></i>
-			</li>
-			<li>
-				<a href="https://claude.xn--6oq72ry9d5zx.cn/" target="_blank" class="mdui-shadow-3"><strong>claude模型镜像</strong></a>
-				<i class="ms1">线路延迟：<i id="lineMs3">loading</i></i>
-			</li>
-			<li>
-				<a href="https://gpt-4o-mini.xn--6oq72ry9d5zx.cn/" target="_blank" class="mdui-shadow-3"><strong>GPT-4o-mini Free Api</strong></a>
-				<i class="ms1">线路延迟：<i id="lineMs3">loading</i></i>
-			</li>
-		</ul>
-	</div>
-	<div class="footer mdui-shadow-3">
-		<b>© 2024 Powered 祖安永久地址发布. All Rights Reserved</b>
-	</div>
-	
-	
-	<script src="https://unpkg.com/mdui@1.0.2/dist/js/mdui.min.js"></script>
-	<script type="text/javascript" src="js/ms.js"></script>
+<body class="bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100 min-h-screen">
+    <div class="container mx-auto px-4">
+        <h1 class="text-5xl font-bold text-center text-gray-800 py-12 animate__animated animate__fadeInDown">Website Guide</h1>
+        <div id="websiteGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Website cards will be dynamically inserted here -->
+        </div>
+        
+        <div class="mt-16 bg-white rounded-xl shadow-2xl p-6 animate__animated animate__fadeInUp">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">延迟统计图表</h2>
+            <canvas id="latencyChart"></canvas>
+        </div>
+        <div class="mt-16 bg-white rounded-xl shadow-2xl p-6 animate__animated animate__fadeInUp">
+            <h2 class="text-2xl font-semibold text-gray-800 mb-4">实时访问统计</h2>
+            <canvas id="visitorChart"></canvas>
+        </div>
+        <footer class="text-center text-gray-600 py-8 mt-12 animate__animated animate__fadeIn">
+            &copy; 2024 Website Guide. All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+        // 网站数据
+        const websites = [
+            { name: "Bing AI 镜像", url: "https://bing.zuan.red/web/#/", color: "blue" },
+            { name: "永久免费图床", url: "https://github-img.xn--6oq72ry9d5zx.cn/", color: "green" },
+            { name: "docker镜像加速", url: "https://docker.xn--6oq72ry9d5zx.cn/", color: "yellow" },
+            { name: "claude模型镜像", url: "https://claude.xn--6oq72ry9d5zx.cn/", color: "red" },
+            { name: "GPT-4o-mini Free Api", url: "https://gpt-4o-mini.xn--6oq72ry9d5zx.cn/", color: "purple" },
+            // 在这里添加更多网站
+        ];
+
+        // 生成网站卡片
+        function generateWebsiteCards() {
+            const grid = document.getElementById('websiteGrid');
+            websites.forEach((site, index) => {
+                const card = `
+                    <div class="animate__animated animate__zoomIn bg-white rounded-xl shadow-2xl overflow-hidden transform transition duration-500 hover:scale-105 hover:shadow-3xl float">
+                        <a href="${site.url}" target="_blank" class="block p-6">
+                            <h2 class="text-2xl font-semibold text-gray-800 mb-4">${site.name}</h2>
+                            <p class="text-gray-600">线路延迟：<span id="lineMs${index}" class="font-medium">计算中...</span></p>
+                            <div class="mt-4 h-2 bg-gray-200 rounded-full">
+                                <div id="progressBar${index}" class="h-2 bg-${site.color}-500 rounded-full" style="width: 0%"></div>
+                            </div>
+                        </a>
+                    </div>
+                `;
+                grid.innerHTML += card;
+            });
+        }
+
+        // 禁用右键菜单
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // 禁用F12、Ctrl+Shift+I、Ctrl+Shift+J、Ctrl+U
+        document.onkeydown = function(e) {
+            if (e.keyCode == 123 || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 73) || 
+                (e.ctrlKey && e.shiftKey && e.keyCode == 74) ||
+                (e.ctrlKey && e.keyCode == 85)) {
+                return false;
+            }
+        };
+
+        document.oncopy = function(e) {
+            e.clipboardData.setData('text/plain', '复制功能已被禁用');
+            e.preventDefault();
+        };
+
+        function simulateLatency(elementId, progressBarId) {
+            const latency = Math.floor(Math.random() * 500) + 50; // 50-550ms
+            const element = document.getElementById(elementId);
+            const progressBar = document.getElementById(progressBarId);
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                progressBar.style.width = `${progress}%`;
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    element.textContent = latency + 'ms';
+                    element.classList.add(latency < 200 ? 'text-green-600' : latency < 400 ? 'text-yellow-600' : 'text-red-600');
+                }
+            }, latency / 20);
+
+            return latency;
+        }
+
+        // 初始化
+        generateWebsiteCards();
+        const latencies = websites.map((site, index) => simulateLatency(`lineMs${index}`, `progressBar${index}`));
+
+        // 创建延迟统计图表
+        const ctx = document.getElementById('latencyChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: websites.map(site => site.name),
+                datasets: [{
+                    label: '延迟 (ms)',
+                    data: latencies,
+                    backgroundColor: websites.map(site => `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.6)`),
+                    borderColor: websites.map(site => `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 1)`),
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutBounce'
+                }
+            }
+        });
+
+        // 创建实时访问统计图表
+        const visitorCtx = document.getElementById('visitorChart').getContext('2d');
+        const visitorLabels = Array.from({length: 10}, (_, i) => `${i * 10}秒前`);
+        const visitorData = Array.from({length: 10}, () => Math.floor(Math.random() * 100));
+
+        const visitorChart = new Chart(visitorCtx, {
+            type: 'line',
+            data: {
+                labels: visitorLabels,
+                datasets: [{
+                    label: '访问量',
+                    data: visitorData,
+                    fill: false,
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                },
+                animation: {
+                    duration: 0
+                }
+            }
+        });
+
+        // 更新实时访问统计数据
+        setInterval(() => {
+            visitorChart.data.datasets[0].data.shift();
+            visitorChart.data.datasets[0].data.push(Math.floor(Math.random() * 100));
+            visitorChart.update();
+        }, 1000);
+
+        setInterval(function() {
+            debugger;
+        }, 100);
+    </script>
 </body>
 </html>
